@@ -58,7 +58,7 @@ let Timerange = ""; // 15m, 5h, 7d, etc
 EmailEvents
 | where TimeGenerated >= ago(Timerange)
 | where SenderMailFromAddress =~ UserEmail or RecipientEmailAddress =~ UserEmail
-| extend CorrespondentEmail = iif(SenderMailFromAddress == Email, RecipientEmailAddress, SenderMailFromAddress)
+| extend CorrespondentEmail = iif(SenderMailFromAddress =~ Email, RecipientEmailAddress, SenderMailFromAddress)
 | summarize CorrespondenceCount = count() by CorrespondentEmail
 | order by CorrespondenceCount desc
 | project CorrespondentEmail, CorrespondenceCount
