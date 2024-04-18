@@ -1,4 +1,4 @@
-# Private IP SignIn Triage
+# Private IP SignIn Triage Queries
 
 ## Query Description
 This set of queries provides an analysis of user and computer access within a network, focusing on logon events from a specified private IP address. It can help identify the most common users and computers, events from associated hosts, identify specific logon events, and track both successful and unsuccessful logons. Additionally, it can highlight unusual logon times which may indicate off-hours access or potential security threats.
