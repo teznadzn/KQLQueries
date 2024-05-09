@@ -133,3 +133,17 @@ DeviceProcessEvents
 | where ProcessCommandLine contains "cmd.exe /c del"
 | project TimeGenerated, DeviceName, FileName, ProcessCommandLine
 ```
+
+### Decode base64 strings in command line
+```KQL
+| let Timerange = ""; // 15m, 5h, 7d, etc
+| let Hostname = "";
+DeviceProcessEvents
+| where TimeGenerated >= ago(Timerange)
+| where DeviceName == Hostname
+| extend base64String = extract(@'\s+([A-Za-z0-9+/]{20}\S+$)', 1, ProcessCommandLine)
+| extend DecodedCommandLine = base64_decode_tostring(base64String)
+| extend DecodedCommandLineReplaceEmptyPlaces = replace_string(DecodedCommandLine, '\u0000', '')
+| where isnotempty(DecodedCommandLine)
+| project-reorder TimeGenerated, DecodedCommandLineReplaceEmptyPlaces, ActionType, FileName, FolderPath, DeviceName, AccountName, FileSize, InitiatingProcessFileName
+```
